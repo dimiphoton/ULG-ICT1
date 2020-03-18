@@ -64,6 +64,7 @@ def joint_entropy(pd):
     return entropy(pd.flatten())
 
 def conditional_entropy(pdXY):
+    # Computes the entropy of X conditioned on Y.
     # Lines : values of X. Columns : values of Y.
     pdY = marginalize(pdXY, (0))
 
@@ -82,10 +83,13 @@ def mutual_information(pdXY):
 
 def cond_joint_entropy(pdXYZ):
 
-    pdX = marginalize(pdXYZ, (1, 2))
+    pdZ = marginalize(pdXYZ, (0, 1))
 
-    return joint_entropy(pdXYZ) - entropy(pdX)
+    return joint_entropy(pdXYZ) - entropy(pdZ)
 
 def cond_mutual_information(pdXYZ):
-    pass
+    pXZ = marginalize(pdXYZ, (1))
+    pZ = marginalize(pdXYZ, (0,1))
+    pYZ = marginalize(pdXYZ, (0))
+    return joint_entropy(pXZ) - 2 * entropy(pZ) - cond_joint_entropy(pdXYZ) + joint_entropy(pYZ)
     
